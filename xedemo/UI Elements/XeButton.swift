@@ -10,12 +10,11 @@ import SwiftUI
 struct XeButton: View {
     let title: String
     let color: Color
-    @State private var isPressed = false
+    let action: () -> Void
 
     var body: some View {
         Button {
-            // TODO: Action placeholder
-            print("\(title) tapped")
+            action()
         } label: {
             Text(title)
                 .font(.system(size: DesignMetric.medium, weight: .semibold))
@@ -29,5 +28,5 @@ struct XeButton: View {
 }
 
 #Preview {
-    XeButton(title: "Test", color: .green)
+    XeButton(title: "Test", color: .green) {}
 }

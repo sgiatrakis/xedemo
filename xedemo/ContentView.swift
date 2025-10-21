@@ -13,6 +13,12 @@ struct ContentView: View {
     @State private var price: String = ""
     @State private var description: String = ""
 
+    @ObservedObject var viewModel: ContentViewModel
+
+    init(viewModel: ContentViewModel) {
+        self.viewModel = viewModel
+    }
+
     var body: some View {
         VStack {
             ScrollView {
@@ -21,22 +27,36 @@ struct ContentView: View {
                         .font(.system(size: DesignMetric.large, weight: .bold))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom, DesignMetric.extraLarge)
-                    XeTextField(title: "Title", text: $title)
-                    XeTextField(title: "Location", text: $location)
+                    XeTextField(title: "Title", text: $title, invalidError: invalidErrorMessage(for: .title)) {
+                        viewModel.clearValidation(for: .title)
+                    }
+                    XeTextField(title: "Location", text: $location, invalidError: invalidErrorMessage(for: .location)) {
+                        viewModel.clearValidation(for: .location)
+                    }
                     XeTextField(title: "Price", text: $price)
                     XeTextEditor(title: "Description", text: $description)
                 }.padding()
             }
 
             HStack(spacing: 40) {
-                XeButton(title: "Submit", color: .green)
-                XeButton(title: "Clear", color: .red)
+                XeButton(title: "Submit", color: .green) {
+                    viewModel.submitProperty(title: title,
+                                             location: location,
+                                             price: price,
+                                             description: description)
+                }
+                XeButton(title: "Clear", color: .red) {
+                }
             }
             .padding(.horizontal, DesignMetric.extraLarge)
         }
     }
+
+    func invalidErrorMessage(for field: FieldKey) -> String? {
+        viewModel.fieldValidationErrors.first { $0.field == field }?.message
+    }
 }
 
 #Preview {
-    ContentView()
+    ContentView(viewModel: ContentViewModel())
 }
