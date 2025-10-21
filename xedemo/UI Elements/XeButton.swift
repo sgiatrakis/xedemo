@@ -10,6 +10,7 @@ import SwiftUI
 struct XeButton: View {
     let title: String
     let color: Color
+    var isDisabled: Bool = false
     let action: () -> Void
 
     var body: some View {
@@ -21,9 +22,9 @@ struct XeButton: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, DesignMetric.medium)
-                .background(color)
+                .background(color.opacity(isDisabled ? 0.5 : 1.0))
                 .cornerRadius(12)
-        }
+        }.disabled(isDisabled)
     }
 }
 

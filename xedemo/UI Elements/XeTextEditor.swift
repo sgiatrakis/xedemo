@@ -28,11 +28,11 @@ struct XeTextEditor: View {
                 .font(.system(size: DesignMetric.mediumLarge, weight: .bold))
                 .padding(.vertical, DesignMetric.small)
             ZStack(alignment: .topLeading) {
-                if text.isEmpty && !isFocused {
+                if text.isEmpty {
                     Text(placeholder)
                         .foregroundColor(Color(uiColor: .placeholderText))
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 10)
+                        .padding(.horizontal, DesignMetric.smallMedium)
+                        .padding(.vertical, DesignMetric.medium)
                 }
                 TextEditor(text: $text)
                     .focused($isFocused)

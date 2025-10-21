@@ -8,12 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var title: String = ""
-    @State private var location: String = ""
-    @State private var price: String = ""
-    @State private var description: String = ""
-
-    @ObservedObject var viewModel: ContentViewModel
+    @State private var property = XeProperty()
+    @ObservedObject private var viewModel: ContentViewModel
 
     init(viewModel: ContentViewModel) {
         self.viewModel = viewModel
@@ -27,33 +23,34 @@ struct ContentView: View {
                         .font(.system(size: DesignMetric.large, weight: .bold))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom, DesignMetric.extraLarge)
-                    XeTextField(title: "Title", text: $title, invalidError: invalidErrorMessage(for: .title)) {
-                        viewModel.clearValidation(for: .title)
-                    }
-                    XeTextField(title: "Location", text: $location, invalidError: invalidErrorMessage(for: .location)) {
-                        viewModel.clearValidation(for: .location)
-                    }
-                    XeTextField(title: "Price", text: $price)
-                    XeTextEditor(title: "Description", text: $description)
+                    XeTextField(title: "Title", text: $property.title)
+                    XeTextField(title: "Location", text: $property.location)
+                    XeTextField(title: "Price", text: $property.price)
+                    XeTextEditor(title: "Description", text: $property.description)
                 }.padding()
             }
 
             HStack(spacing: 40) {
-                XeButton(title: "Submit", color: .green) {
-                    viewModel.submitProperty(title: title,
-                                             location: location,
-                                             price: price,
-                                             description: description)
+                XeButton(title: "Submit", color: .green, isDisabled: validatedFields()) {
+                    viewModel.submitProperty(title: property.title,
+                                             location: property.location,
+                                             price: property.price,
+                                             description: property.description)
                 }
                 XeButton(title: "Clear", color: .red) {
+                    clearFields()
                 }
             }
             .padding(.horizontal, DesignMetric.extraLarge)
         }
     }
 
-    func invalidErrorMessage(for field: FieldKey) -> String? {
-        viewModel.fieldValidationErrors.first { $0.field == field }?.message
+    private func validatedFields() -> Bool {
+        property.mandatoriesValidated()
+    }
+
+    private func clearFields() {
+        property.reset()
     }
 }
 
