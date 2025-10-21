@@ -94,6 +94,7 @@
 			buildConfigurationList = 701D0C2B2EA7A10C0060DACF /* Build configuration list for PBXNativeTarget "xedemo" */;
 			buildPhases = (
 				701D0C062EA7A10A0060DACF /* Sources */,
+				70E511CB2EA7CC7000ABA76B /* Run SwiftLint */,
 				701D0C072EA7A10A0060DACF /* Frameworks */,
 				701D0C082EA7A10A0060DACF /* Resources */,
 			);
@@ -186,6 +187,9 @@
 			);
 			mainGroup = 701D0C012EA7A10A0060DACF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				70E511CA2EA7CB4D00ABA76B /* XCRemoteSwiftPackageReference "SwiftLint" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 701D0C0B2EA7A10A0060DACF /* Products */;
 			projectDirPath = "";
@@ -221,6 +225,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		70E511CB2EA7CC7000ABA76B /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SWIFTLINT=/opt/homebrew/bin/swiftlint\n\nif [ -x \"$SWIFTLINT\" ]; then\n    echo \"Running SwiftLint...\"\n\n    cd \"${SRCROOT}/xedemo\" || exit 0\n\n    \"$SWIFTLINT\" lint --quiet\nelse\n    echo \"warning: SwiftLint not found, skipping lint.\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		701D0C062EA7A10A0060DACF /* Sources */ = {
@@ -387,6 +414,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -418,6 +446,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -561,6 +590,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		70E511CA2EA7CB4D00ABA76B /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.62.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 701D0C022EA7A10A0060DACF /* Project object */;
 }
