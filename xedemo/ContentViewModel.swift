@@ -13,7 +13,6 @@ class ContentViewModel: ObservableObject {
     private let cacheManager: AutoCompleteCacheManager
 
     @Published var state: EventState<String> = .initial
-    @Published var cachedSuggestions: [AutoCompleteSuggestion] = []
 
     init(service: ServiceAPI = di()!,
          cacheManager: AutoCompleteCacheManager = di()!) {
@@ -41,13 +40,14 @@ class ContentViewModel: ObservableObject {
     func fetchAutoCompleteSuggestions(input: String) async -> [AutoCompleteSuggestion] {
         // First, we try getting cached xe properties, if any.
         if let cached = cacheManager.getCachedSuggestions(for: input), !cached.isEmpty {
-            self.cachedSuggestions = cached
+            print("ZAMPON CACHED: \(cached)")
             return cached
         }
 
         do {
             let autoCompleteSuggestion = try await service.fetchAutoCompleteSuggestions(input: input)
             cacheManager.cacheSuggestions(autoCompleteSuggestion, for: input)
+            print("ZAMPON LIVE: \(autoCompleteSuggestion)")
             return autoCompleteSuggestion
         } catch {
             print("Debug Demo Error: \(error)")
