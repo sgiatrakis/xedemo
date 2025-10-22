@@ -18,6 +18,6 @@ struct XeProperty {
     }
 
     func mandatoriesValidated() -> Bool {
-        title.isEmpty || location.isEmpty
+        !title.isEmpty
     }
 }

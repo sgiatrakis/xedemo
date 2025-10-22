@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var property = XeProperty()
+    @State private var selectedSuggestion: AutoCompleteSuggestion?
+
     @ObservedObject private var viewModel: ContentViewModel
 
     init(viewModel: ContentViewModel) {
@@ -25,14 +27,22 @@ struct ContentView: View {
                         .padding(.bottom, DesignMetric.extraLarge)
                     XeTextField(title: "Title", text: $property.title)
 
-                    XeAutoCompleteTextField(
+                    XeAutoCompleteTextField<AutoCompleteSuggestion>(
                         title: "Location",
                         text: $property.location,
                         suggestionsProvider: { query in
-                            let autoCompleteSuggestions = await viewModel.fetchAutoCompleteSuggestions(input: query)
-                            return autoCompleteSuggestions.map { $0.mainText + ", " + $0.secondaryText }
+                            await viewModel.fetchAutoCompleteSuggestions(input: query)
+                        },
+                        display: { $0.displayText },
+                        onSelectSuggestion: { suggestion in
+                            selectedSuggestion = suggestion
                         }
                     )
+                    .onChange(of: property.location) { _, newValue in
+                        if selectedSuggestion?.displayText != newValue {
+                            selectedSuggestion = nil
+                        }
+                    }
 
                     XeTextField(title: "Price", text: $property.price)
                     XeTextEditor(title: "Description", text: $property.description)
@@ -40,11 +50,13 @@ struct ContentView: View {
             }
 
             HStack(spacing: 40) {
-                XeButton(title: "Submit", color: .green, isDisabled: validatedFields()) {
-                    viewModel.submitProperty(title: property.title,
-                                             location: property.location,
-                                             price: property.price,
-                                             description: property.description)
+                XeButton(title: "Submit", color: .green, isDisabled: !validatedFields()) {
+                    if let selectedSuggestion {
+                        viewModel.submitProperty(title: property.title,
+                                                 location: selectedSuggestion,
+                                                 price: property.price,
+                                                 description: property.description)
+                    }
                 }
                 XeButton(title: "Clear", color: .red) {
                     clearFields()
@@ -55,7 +67,7 @@ struct ContentView: View {
     }
 
     private func validatedFields() -> Bool {
-        property.mandatoriesValidated()
+        property.mandatoriesValidated() && selectedSuggestion != nil
     }
 
     private func clearFields() {

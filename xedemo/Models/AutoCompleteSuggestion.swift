@@ -7,8 +7,16 @@
 
 import Foundation
 
-struct AutoCompleteSuggestion {
+struct AutoCompleteSuggestion: Identifiable {
     var placeId: String
     var mainText: String
     var secondaryText: String
+
+    var id: String {
+        placeId
+    }
+
+    var displayText: String {
+        mainText + ", " + secondaryText
+    }
 }
