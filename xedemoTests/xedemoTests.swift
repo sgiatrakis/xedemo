@@ -10,27 +10,52 @@ import XCTest
 
 final class xedemoTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    private var testComponents: TestComponents?
+
+    typealias TestComponents = (
+        viewModel: ContentViewModel,
+        api: StubServiceAPI
+    )
+
+    override func setUp() {
+        testComponents = prepareTestComponents()
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    private func prepareTestComponents() -> TestComponents {
+        let api = StubServiceAPI()
+        let cache = StubCacheManager()
+        let viewModel = ContentViewModel(service: api, cacheManager: cache)
+        return (viewModel, api)
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func test_fetchAutoCompleteSuggestions() async {
+        let result = await testComponents?.viewModel.fetchAutoCompleteSuggestions(input: "Ath")
+        await MainActor.run {
+            XCTAssertEqual(result?.first?.placeId, "123")
+            XCTAssertEqual(result?.first?.mainText, "Athens")
+            XCTAssertEqual(result?.first?.secondaryText, "GR")
         }
     }
 
+}
+
+extension xedemoTests {
+    class StubServiceAPI: ServiceAPI {
+        var fetchAutoCompleteSuggestionResult: Result<[AutoCompleteSuggestion], Error> = .success([AutoCompleteSuggestion(placeId: "123", mainText: "Athens", secondaryText: "GR")])
+        
+        func fetchAutoCompleteSuggestions(input: String) async throws -> [AutoCompleteSuggestion] {
+            try fetchAutoCompleteSuggestionResult.get()
+        }
+
+    }
+    
+    class StubCacheManager: AutoCompleteCacheManagerAPI {
+        func getCachedSuggestions(for key: String) -> [AutoCompleteSuggestion]? {
+            return nil
+        }
+        
+        func cacheSuggestions(_ suggestions: [AutoCompleteSuggestion], for key: String) {
+            // No needed
+        }
+    }
 }

@@ -25,5 +25,9 @@ struct CacheAssembly: Assembly {
             let context = resolver.resolve(ModelContext.self)!
             return AutoCompleteCacheManager(context: context)
         }.inObjectScope(.container)
+
+        container.register(AutoCompleteCacheManagerAPI.self) { resolver in
+            resolver.resolve(AutoCompleteCacheManager.self)!
+        }.inObjectScope(.container)
     }
 }

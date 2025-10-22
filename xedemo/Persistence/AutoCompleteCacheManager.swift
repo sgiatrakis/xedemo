@@ -8,7 +8,12 @@
 import SwiftData
 import Foundation
 
-final class AutoCompleteCacheManager {
+protocol AutoCompleteCacheManagerAPI {
+    func getCachedSuggestions(for key: String) -> [AutoCompleteSuggestion]?
+    func cacheSuggestions(_ suggestions: [AutoCompleteSuggestion], for key: String)
+}
+
+final class AutoCompleteCacheManager: AutoCompleteCacheManagerAPI {
 
     let context: ModelContext
 
