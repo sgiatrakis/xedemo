@@ -29,6 +29,7 @@ struct XeAutoCompleteTextField<T: Identifiable>: View {
                 .padding(.vertical, DesignMetric.small)
 
             TextField(text, text: $text, prompt: Text(placeholder))
+                .autocorrectionDisabled(true)
                 .padding(DesignMetric.medium)
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
