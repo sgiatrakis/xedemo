@@ -10,9 +10,19 @@ import SwiftUI
 @main
 // swiftlint:disable:next type_name
 struct xedemoApp: App {
+    init() {
+        initDependencyInjection()
+    }
     var body: some Scene {
         WindowGroup {
             ContentView(viewModel: ContentViewModel())
         }
+    }
+
+    private func initDependencyInjection() {
+        DependencyContainer.shared.register(assemblies: [
+            NetworkManagerAssembly(),
+            ServiceAssembly()
+        ])
     }
 }

@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		700A767F2EA8EB4C0010F164 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 700A767E2EA8EB4C0010F164 /* Alamofire */; };
+		700A76812EA8EB4C0010F164 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 700A76802EA8EB4C0010F164 /* Swinject */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		701D0C182EA7A10C0060DACF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -47,6 +52,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				700A767F2EA8EB4C0010F164 /* Alamofire in Frameworks */,
+				700A76812EA8EB4C0010F164 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,11 +74,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		700A767D2EA8EB4C0010F164 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		701D0C012EA7A10A0060DACF = {
 			isa = PBXGroup;
 			children = (
 				701D0C0C2EA7A10A0060DACF /* xedemo */,
 				701D0C1A2EA7A10C0060DACF /* xedemoTests */,
+				700A767D2EA8EB4C0010F164 /* Frameworks */,
 				701D0C0B2EA7A10A0060DACF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,6 +122,8 @@
 			);
 			name = xedemo;
 			packageProductDependencies = (
+				700A767E2EA8EB4C0010F164 /* Alamofire */,
+				700A76802EA8EB4C0010F164 /* Swinject */,
 			);
 			productName = xedemo;
 			productReference = 701D0C0A2EA7A10A0060DACF /* xedemo.app */;
@@ -189,6 +206,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				70E511CA2EA7CB4D00ABA76B /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				700A765A2EA8E58B0010F164 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				700A765B2EA8E6A40010F164 /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 701D0C0B2EA7A10A0060DACF /* Products */;
@@ -592,6 +611,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		700A765A2EA8E58B0010F164 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.10.2;
+			};
+		};
+		700A765B2EA8E6A40010F164 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.10.0;
+			};
+		};
 		70E511CA2EA7CB4D00ABA76B /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/SwiftLint.git";
@@ -601,6 +636,19 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		700A767E2EA8EB4C0010F164 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 700A765A2EA8E58B0010F164 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		700A76802EA8EB4C0010F164 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 700A765B2EA8E6A40010F164 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 701D0C022EA7A10A0060DACF /* Project object */;
 }
