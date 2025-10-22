@@ -30,7 +30,3 @@ public class DependencyContainer {
 public func di<Service>(_ serviceType: Service.Type = Service.self) -> Service? {
     return DependencyContainer.shared.container.resolve(serviceType)
 }
-
-public func di<Service, Arg1>(_ serviceType: Service.Type = Service.self, argument: Arg1) -> Service? {
-    return DependencyContainer.shared.container.resolve(serviceType, argument: argument)
-}
