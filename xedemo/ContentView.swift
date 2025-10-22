@@ -49,20 +49,35 @@ struct ContentView: View {
                 }.padding()
             }
 
-            HStack(spacing: 40) {
-                XeButton(title: "Submit", color: .green, isDisabled: !validatedFields()) {
-                    if let selectedSuggestion {
-                        viewModel.submitProperty(title: property.title,
-                                                 location: selectedSuggestion,
-                                                 price: property.price,
-                                                 description: property.description)
+            switch viewModel.state {
+            case .initial:
+                HStack(spacing: 40) {
+                    XeButton(title: "Submit", color: .green, isDisabled: !validatedFields()) {
+                        if let selectedSuggestion {
+                            viewModel.submitProperty(title: property.title,
+                                                     location: selectedSuggestion,
+                                                     price: property.price,
+                                                     description: property.description)
+                        }
+                    }
+                    XeButton(title: "Clear", color: .red) {
+                        clearFields()
                     }
                 }
-                XeButton(title: "Clear", color: .red) {
-                    clearFields()
-                }
+                .padding(.horizontal, DesignMetric.extraLarge)
+            case .success(let jsonString):
+                Text(jsonString)
+                    .font(.system(size: DesignMetric.smallMedium, weight: .medium))
+                    .padding()
+                    .background(Color.black.opacity(0.8))
+                    .foregroundColor(.white)
+                    .padding(.vertical, DesignMetric.mediumLarge)
             }
-            .padding(.horizontal, DesignMetric.extraLarge)
+        }
+        .onChange(of: viewModel.state) { oldValue, newValue in
+            if case .success = oldValue, case .initial = newValue {
+                clearFields()
+            }
         }
     }
 

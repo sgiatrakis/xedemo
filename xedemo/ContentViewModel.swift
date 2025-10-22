@@ -11,7 +11,7 @@ import Combine
 class ContentViewModel: ObservableObject {
     private let service: ServiceAPI
 
-    @Published var state: LoadingState<String> = .initial
+    @Published var state: EventState<String> = .initial
 
     init(service: ServiceAPI = di()!) {
         self.service = service
@@ -25,9 +25,12 @@ class ContentViewModel: ObservableObject {
                                              location: location,
                                              price: price,
                                              description: description) {
-            //            Task { @MainActor in
-            //                // TODO: Add logic
-            //            }
+            state = .success(jsonString)
+            // Remove json after 3 secs, Revert Sticky Buttons and Clear all fields
+            Task {
+                await DelayHelper.delay(3)
+                state = .initial
+            }
         }
     }
 

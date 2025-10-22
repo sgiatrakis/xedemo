@@ -7,9 +7,7 @@
 
 import Foundation
 
-enum LoadingState<T> {
+enum EventState<T: Equatable>: Equatable {
     case initial
-    case loading
     case success(T)
-    case error(String)
 }
