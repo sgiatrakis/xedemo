@@ -10,11 +10,15 @@ import Combine
 
 class ContentViewModel: ObservableObject {
     private let service: ServiceAPI
+    private let cacheManager: AutoCompleteCacheManager
 
     @Published var state: EventState<String> = .initial
+    @Published var cachedSuggestions: [AutoCompleteSuggestion] = []
 
-    init(service: ServiceAPI = di()!) {
+    init(service: ServiceAPI = di()!,
+         cacheManager: AutoCompleteCacheManager = di()!) {
         self.service = service
+        self.cacheManager = cacheManager
     }
 
     func submitProperty(title: String,
@@ -35,8 +39,15 @@ class ContentViewModel: ObservableObject {
     }
 
     func fetchAutoCompleteSuggestions(input: String) async -> [AutoCompleteSuggestion] {
+        // First, we try getting cached xe properties, if any.
+        if let cached = cacheManager.getCachedSuggestions(for: input), !cached.isEmpty {
+            self.cachedSuggestions = cached
+            return cached
+        }
+
         do {
             let autoCompleteSuggestion = try await service.fetchAutoCompleteSuggestions(input: input)
+            cacheManager.cacheSuggestions(autoCompleteSuggestion, for: input)
             return autoCompleteSuggestion
         } catch {
             print("Debug Demo Error: \(error)")

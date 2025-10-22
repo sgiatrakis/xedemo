@@ -22,7 +22,8 @@ struct xedemoApp: App {
     private func initDependencyInjection() {
         DependencyContainer.shared.register(assemblies: [
             NetworkManagerAssembly(),
-            ServiceAssembly()
+            ServiceAssembly(),
+            CacheAssembly()
         ])
     }
 }

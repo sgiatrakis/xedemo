@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AutoCompleteSuggestion: Identifiable {
+struct AutoCompleteSuggestion: Codable, Identifiable, Hashable {
     var placeId: String
     var mainText: String
     var secondaryText: String
