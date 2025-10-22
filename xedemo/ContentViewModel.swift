@@ -20,13 +20,16 @@ class ContentViewModel: ObservableObject {
                         location: String,
                         price: String?,
                         description: String?) {
-        Task { @MainActor in
-            do {
-                let data = try await service.fetchAutoCompleteSuggestions(input: "nafplio")
-                print("Debug Data: \(data)")
-            } catch let error {
-                print("Debug Demo: \(error)")
-            }
+    }
+
+    func fetchAutoCompleteSuggestions(input: String) async -> [AutoCompleteSuggestion] {
+        do {
+            let autoCompleteSuggestion = try await service.fetchAutoCompleteSuggestions(input: input)
+            return autoCompleteSuggestion
+        } catch {
+            print("Debug Demo Error: \(error)")
+            return []
         }
     }
+
 }

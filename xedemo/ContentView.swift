@@ -24,7 +24,16 @@ struct ContentView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom, DesignMetric.extraLarge)
                     XeTextField(title: "Title", text: $property.title)
-                    XeTextField(title: "Location", text: $property.location)
+
+                    XeAutoCompleteTextField(
+                        title: "Location",
+                        text: $property.location,
+                        suggestionsProvider: { query in
+                            let autoCompleteSuggestions = await viewModel.fetchAutoCompleteSuggestions(input: query)
+                            return autoCompleteSuggestions.map { $0.mainText + ", " + $0.secondaryText }
+                        }
+                    )
+
                     XeTextField(title: "Price", text: $property.price)
                     XeTextEditor(title: "Description", text: $property.description)
                 }.padding()

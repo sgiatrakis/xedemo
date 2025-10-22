@@ -26,7 +26,7 @@ struct XeTextField: View {
             Text(title)
                 .font(.system(size: DesignMetric.mediumLarge, weight: .bold))
                 .padding(.vertical, DesignMetric.small)
-            TextField(placeholder, text: $text)
+            TextField(text, text: $text, prompt: Text(placeholder))
                 .padding(DesignMetric.medium)
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
