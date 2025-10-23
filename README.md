@@ -30,7 +30,7 @@ Demo Project for xe property listing
 - Code would need polishing in a real app
 - Potential errors from networking or decoding are not handled due to the demo’s purpose
 - Could add some more detailed Unit Tests with different logic.
-- Used boilerplate and unoptimized code for SwiftData
+- Used boilerplate and unoptimized code for SwiftData & DI Containers etc
 
 ## Contact
 
