@@ -20,3 +20,27 @@ struct AutoCompleteSuggestion: Codable, Identifiable, Hashable {
         mainText + ", " + secondaryText
     }
 }
+
+extension AutoCompleteSuggestion {
+    func asJSONFormat(title: String,
+                      price: String?,
+                      description: String?) -> String? {
+        let propertyDict: [String: Any] = [
+            "title": title,
+            "location": [
+                "placeId": self.placeId,
+                "mainText": self.mainText,
+                "secondaryText": self.secondaryText
+            ],
+            "price": price ?? "",
+            "description": description ?? ""
+        ]
+
+        if let data = try? JSONSerialization.data(withJSONObject: propertyDict, options: .prettyPrinted),
+           let jsonString = String(data: data, encoding: .utf8) {
+            return jsonString
+        } else {
+            return nil
+        }
+    }
+}

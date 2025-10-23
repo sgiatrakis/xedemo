@@ -24,16 +24,17 @@ class ContentViewModel: ObservableObject {
                         location: AutoCompleteSuggestion,
                         price: String?,
                         description: String?) {
-        if let jsonString = createJSONString(title: title,
-                                             location: location,
-                                             price: price,
-                                             description: description) {
+        if let jsonString = location.asJSONFormat(title: title,
+                                            price: price,
+                                            description: description) {
             state = .success(jsonString)
             // Remove json after 3 secs, Revert Sticky Buttons and Clear all fields
             Task {
                 await DelayHelper.delay(3)
                 state = .initial
             }
+        } else {
+            print("Debug Demo Error \(#function)")
         }
     }
 
@@ -53,28 +54,4 @@ class ContentViewModel: ObservableObject {
         }
     }
 
-}
-
-extension ContentViewModel {
-    func createJSONString(title: String,
-                          location: AutoCompleteSuggestion,
-                          price: String?,
-                          description: String?) -> String? {
-        let propertyDict: [String: Any] = [
-            "title": title,
-            "location": [
-                "placeId": location.placeId,
-                "mainText": location.mainText,
-                "secondaryText": location.secondaryText
-            ],
-            "price": price ?? "",
-            "description": description ?? ""
-        ]
-
-        if let data = try? JSONSerialization.data(withJSONObject: propertyDict, options: .prettyPrinted),
-           let jsonString = String(data: data, encoding: .utf8) {
-            return jsonString
-        }
-        return nil
-    }
 }
