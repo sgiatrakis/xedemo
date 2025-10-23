@@ -44,6 +44,8 @@ final class xedemoTests: XCTestCase {
             XCTAssertEqual(result?.first?.placeId, "123")
             XCTAssertEqual(result?.first?.mainText, "Athens")
             XCTAssertEqual(result?.first?.secondaryText, "GR")
+            // StubServiceAPI has been called once
+            XCTAssertEqual(testComponentsLive?.api.callCount, 1)
             // Nothing from Cache, as we mocked StubCacheManagerAPINoResults
             XCTAssertNotEqual(result?.first?.placeId, "789")
             XCTAssertNotEqual(result?.first?.mainText, "Heraklion")
@@ -68,6 +70,8 @@ final class xedemoTests: XCTestCase {
             XCTAssertNotEqual(result?.first?.placeId, "123")
             XCTAssertNotEqual(result?.first?.mainText, "Athens")
             XCTAssertNotEqual(result?.first?.secondaryText, "GR")
+            // StubServiceAPI should not have been called at all
+            XCTAssertEqual(testComponentsLive?.api.callCount, 0)
             // Instead, we have Cached Results from StubCacheManager
             XCTAssertEqual(result?.first?.placeId, "789")
             XCTAssertEqual(result?.first?.mainText, "Heraklion")
@@ -78,11 +82,14 @@ final class xedemoTests: XCTestCase {
 
 extension xedemoTests {
     class StubServiceAPI: ServiceAPI {
+        private(set) var callCount: Int = 0
+
         // Instead coding results once, by custom Result addition we can change during Unit test execution
         var fetchAutoCompleteSuggestionResult: Result<[AutoCompleteSuggestion], Error> = .success([AutoCompleteSuggestion(placeId: "123", mainText: "Athens", secondaryText: "GR")])
         
         func fetchAutoCompleteSuggestions(input: String) async throws -> [AutoCompleteSuggestion] {
-            try fetchAutoCompleteSuggestionResult.get()
+            callCount += 1
+            return try fetchAutoCompleteSuggestionResult.get()
         }
 
     }
