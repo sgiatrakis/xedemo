@@ -58,6 +58,7 @@ struct ContentView: View {
                                                      location: selectedSuggestion,
                                                      price: property.price,
                                                      description: property.description)
+                            clearFields()
                         }
                     }
                     XeButton(title: "Clear", color: .red) {
@@ -74,11 +75,6 @@ struct ContentView: View {
                     .padding(.vertical, DesignMetric.mediumLarge)
             }
         }
-        .onChange(of: viewModel.state) { oldValue, newValue in
-            if case .success = oldValue, case .initial = newValue {
-                clearFields()
-            }
-        }
     }
 
     private func validatedFields() -> Bool {
@@ -86,6 +82,7 @@ struct ContentView: View {
     }
 
     private func clearFields() {
+        hideKeyboard()
         property.reset()
     }
 }
